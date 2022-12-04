@@ -2,6 +2,7 @@
 // if exist create new jwt
 // send back to front end
 
+const jwt = require('jsonwebtoken');
 const CustomAPIError = require('../errors/custom-error');
 
 const login = async (req, res) => {
@@ -12,7 +13,14 @@ const login = async (req, res) => {
   if (!username || !password) {
     throw new CustomAPIError('Please provide email and password', 400);
   }
+
+  // dummy id since we are not connected to DB
+  const id = new Date().getDate();
+  // try to keep payload small
+  const token = jwt.sign({ id, username }, process.env.JWT_SECRET);
+
   console.log(username, password);
+  res.status(200).json({ msg: 'user created', token });
 };
 
 const dashboard = async (req, res) => {
