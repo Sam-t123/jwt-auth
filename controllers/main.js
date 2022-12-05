@@ -3,6 +3,7 @@
 // send back to front end
 
 const jwt = require('jsonwebtoken');
+const { StatusCodes } = require('http-status-codes');
 const { BadRequestError } = require('../errors');
 
 const login = async (req, res) => {
@@ -18,12 +19,12 @@ const login = async (req, res) => {
   const id = new Date().getDate();
   // try to keep payload small
   const token = jwt.sign({ id, username }, process.env.JWT_SECRET);
-  res.status(200).json({ msg: 'user created', token });
+  res.status(StatusCodes.OK).json({ msg: 'user created', token });
 };
 
 const dashboard = async (req, res) => {
   const luckyNumber = Math.floor(Math.random() * 100);
-  res.status(200).json({
+  res.status(StatusCodes.OK).json({
     msg: `Hello, ${req.user.username}`,
     secret: `Your lucky number is ${luckyNumber}`,
   });
